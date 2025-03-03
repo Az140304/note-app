@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Note app</title>
+</head>
+<body>
+    <h1>Note app</h1>
+    <form id="userForm">
+        <label for="fname">Name:</label><br>
+        <input type="text" id="name" name="name" value=""><br>
+        <label for="lname">Email:</label><br>
+        <input type="text" id="email" name="email" value=""><br><br>
+        <label for="lname">Gender:</label><br>
+        <input type="text" id="gender" name="gender" value=""><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <table>
+        <tbody>
+            <% if(data.length){
+                
+                for(var i = 0; i< data.length; i++) {%>  
+                    <tr>
+                        <th scope="row" class="text-center"><%= (i+1) %></th>
+                        <td><%= data[i].name%></td>
+                        <td><%= data[i].email%></td>
+                        <td><%= data[i].gender%></td>
+                        <td class="text-center">
+                            <a href="/posts/edit/<%=data[i].id%>" class="btn btn-sm btn-primary">EDIT</a>
+                            <a onclick="return alert('Are You sure?')" href="/posts/delete/<%=data[i].id%>" class="btn btn-sm btn-danger">HAPUS</a>
+                        </td>
+                    </tr>
+                <% }
+                
+            }else{ %>
+                <tr>
+                    <td colspan="4">
+                        <div class="alert alert-danger" role="alert">
+                            Data Tidak Ditemukan !
+                        </div>
+                    </td>
+                </tr>
+            <% } %>    
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/add-users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(result.msg);
+                    location.reload(); // Show success message
+                } else {
+                    alert('Error creating user');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error creating user');
+            }
+        });
+    </script>
+</body>
+</html>

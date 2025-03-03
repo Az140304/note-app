@@ -1,11 +1,25 @@
 GET http://localhost:5000/users
 
 ###
-POST http://localhost:5000/add-user
+POST http://localhost:5000/add-users
 Content-Type: application/json
 
 {
-    "name": "bjir",
+    "name": "hellosdf",
+    "email": "heloosdf@gmail.com",
+    "gender": "Male"
+}
+
+###
+PUT http://localhost:5000/user/1
+Content-Type: application/json
+
+{
+    "name": "tes2t",
     "email": "bjir@gmail.com",
     "gender": "Male"
 }
+
+###
+DELETE  http://localhost:5000/user/1
+
